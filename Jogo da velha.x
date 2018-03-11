@@ -29,6 +29,7 @@ Principal()
 		
 		se(op == 0)
 		{
+			tabuleiro.reiniciar();
 			Inteiro: vencedor = jogo.iniciar(jogador);
 			Tecla.ler();
 			
@@ -47,7 +48,7 @@ Principal()
 		se(op == 1)
 		{
 			Objeto: menuConfig = novo Menu(10, 5, 0);
-			Texto[]: alternativas = Vetor.texto("Alterar cores", "Alterar caracteres", "Voltar");
+			Texto[]: alternativas = Vetor.texto("Alterar cores", "Alterar caracteres", "Modo de jogo", "Voltar");
 			Inteiro: opConfig;
 			
 			menuConfig.alterarAlternativas(alternativas);
@@ -83,8 +84,8 @@ Principal()
 						
 						Posicionar(menuCores.x() + 10, menuCores.y() + txtCores.tamanho / 2 + i);
 						Cores(8, 0);
-						Texto: txt = "Jogador " << i + 1 << ": ";
-						Tela.escrever(txt);
+						Texto: txt = "Jogador " << i + 1 << ": |";
+						Tela.escrever(txt << " |");
 						cor[i] = menuCores.exibir();
 						Posicionar(menuCores.x() + 10 + txt.tamanho, menuCores.y() + txtCores.tamanho / 2 + i);
 						Cores(cor[i], 0);
@@ -120,8 +121,8 @@ Principal()
 						
 						Posicionar(menuCaracteres.x() + 10, menuCaracteres.y() + txtCaracteres.tamanho / 2 + i);
 						Cores(8, 0);
-						Texto: txt = "Jogador " << i + 1 << ": ";
-						Tela.escrever(txt);
+						Texto: txt = "Jogador " << i + 1 << ": |";
+						Tela.escrever(txt << " |");
 						img[i] = txtCaracteres[menuCaracteres.exibir()].caractere(0);
 						Posicionar(menuCaracteres.x() + 10 + txt.tamanho, menuCaracteres.y() + txtCaracteres.tamanho / 2 + i);
 						Cores(tabuleiro.cor(i + 1), 0);
@@ -133,14 +134,30 @@ Principal()
 					img.liberar();
 					menuCaracteres.destruir();
 				}
+				
+				se(opConfig == 2)
+				{
+					Objeto: menuModo = novo Menu(10, 5, 0);
+					Texto[]: txtModo = Vetor.texto("2 jogadores");
+					
+					menuModo.alterarAlternativas(txtModo);
+					menuModo.alterarCores(15, 0, 8, 0);
+					menuModo.prefixo("\26", " ");
+					
+					Inteiro: opModo = menuModo.exibir();
+					
+					se(opModo == 0)
+						jogo.alterarControladores(controle, controle);
+					
+					menuModo.destruir();
+					txtModo.liberar();
+				}
 			}
-			enquanto(opConfig != 2);
+			enquanto(opConfig != 3);
 			
 			menuConfig.destruir();
 			alternativas.liberar();
 		}
-		
-		tabuleiro.reiniciar();
 	}
 	enquanto(op != 2);
 }

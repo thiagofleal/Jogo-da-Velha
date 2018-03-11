@@ -15,6 +15,12 @@ Classe: Jogo
 			este.controle2 = controle2;
 		}
 		
+		alterarControladores(Objeto: controle1, Objeto: controle2)
+		{
+			este.controle1 = controle1;
+			este.controle2 = controle2;
+		}
+		
 		iniciar(Inteiro: jogador)
 		{
 			se(jogador != 1 && jogador != 2)
