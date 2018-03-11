@@ -1,0 +1,59 @@
+Classe: Jogo
+{
+	Privado:
+		
+		Objeto: tabuleiro;
+		Objeto: controle1;
+		Objeto: controle2;
+	
+	Publico:
+		
+		construtor(Objeto: tabuleiro, Objeto: controle1, Objeto: controle2)
+		{
+			este.tabuleiro = tabuleiro;
+			este.controle1 = controle1;
+			este.controle2 = controle2;
+		}
+		
+		iniciar(Inteiro: jogador)
+		{
+			se(jogador != 1 && jogador != 2)
+				retornar: 0;
+			
+			enquanto(este.tabuleiro.jogadas() > 0)
+			{
+				Cores(este.tabuleiro.cor(jogador), este.tabuleiro.cor(0));
+				Posicionar(este.tabuleiro.x(), este.tabuleiro.y() + 7);
+				Tela.escrever("Jogador: " << este.tabuleiro.jogador(jogador));
+				
+				se(jogador == 1)
+				{
+					este.controle1.jogar(jogador);
+					jogador = 2;
+				}
+				senao
+				{
+					este.controle2.jogar(jogador);
+					jogador = 1;
+				}
+				este.tabuleiro.desenhar();
+			}
+			
+			Inteiro: vencedor = este.tabuleiro.vencedor();
+			
+			se(vencedor != 0)
+			{
+				Posicionar(este.tabuleiro.x(), este.tabuleiro.y() + 7);
+				Cores(este.tabuleiro.cor(vencedor), este.tabuleiro.cor(0));
+				Tela.escrever("Vencedor: " << este.tabuleiro.jogador(vencedor));
+			}
+			senao
+			{
+				Posicionar(este.tabuleiro.x(), este.tabuleiro.y() + 7);
+				Cores(4, este.tabuleiro.cor(0));
+				Tela.escrever("Deu velha...");
+			}
+			
+			retornar: vencedor;
+		}
+}

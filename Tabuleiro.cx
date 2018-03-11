@@ -1,0 +1,150 @@
+Classe: Tabuleiro
+{
+	Privado:
+		
+		Inteiro: x, y;
+		Caractere[]: jogador;
+		Inteiro[]: cor;
+		Inteiro[][]: posicao;
+	
+	Publico:
+		
+		construtor(Inteiro: x, Inteiro: y)
+		{
+			este.x = x;
+			este.y = y;
+			este.jogador = Vetor.caractere(' ', 'X', 'O');
+			este.cor = Vetor.inteiro(0, 1, 2, 0, 7);
+			este.posicao = novo Inteiro[3][3];
+		}
+		
+		x()
+		{retornar: este.x;}
+		
+		y()
+		{retornar: este.y;}
+		
+		jogador(Inteiro: indice)
+		{
+			se(indice < este.jogador.tamanho)
+				retornar: este.jogador[indice];
+		}
+		
+		cor(Inteiro: indice)
+		{
+			se(indice < este.cor.tamanho)
+				retornar: este.cor[indice];
+		}
+		
+		posicao(Inteiro: linha, Inteiro: coluna)
+		{
+			se(linha < este.posicao.tamanho)
+				se(coluna < este.posicao[linha].tamanho)
+					retornar: este.posicao[linha][coluna];
+		}
+		
+		jogadas()
+		{
+			se(este.vencedor() != 0)
+				retornar: 0;
+			
+			Inteiro: contador;
+			
+			para(Inteiro: i; i < este.posicao.tamanho; i++)
+				para(Inteiro: j; j < este.posicao[i].tamanho; j++)
+					se(este.posicao[i][j] == 0)
+						contador++;
+			retornar: contador;
+		}
+		
+		marcar(Inteiro: linha, Inteiro: coluna, Inteiro: jogador)
+		{
+			se(este.posicao[linha][coluna] == 0)
+			{
+				este.posicao[linha][coluna] = jogador;
+				retornar: verdadeiro;
+			}
+			retornar: falso;
+		}
+		
+		alterarJogadores(Caractere: jog1, Caractere: jog2)
+		{
+			este.jogador[1] = jog1;
+			este.jogador[2] = jog2;
+		}
+		
+		alterarCores(Inteiro: corFundo, Inteiro: corJog1, Inteiro: corJog2, Inteiro: corTab, Inteiro: corTxtTab)
+		{
+			este.cor[0] = corFundo;
+			este.cor[1] = corJog1;
+			este.cor[2] = corJog2;
+			este.cor[3] = corTab;
+			este.cor[4] = corTxtTab;
+		}
+		
+		reiniciar()
+		{
+			para(Inteiro: i; i < este.posicao.tamanho; i++)
+				para(Inteiro: j; j < este.posicao[i].tamanho; j++)
+					este.posicao[i][j] = 0;
+		}
+		
+		desenhar()
+		{
+			para(Inteiro: i; i < este.posicao.tamanho; i++)
+			{
+				Posicionar(este.x, este.y + 2 * i);
+				
+				para(Inteiro: j; j < este.posicao[i].tamanho; j++)
+				{
+					Cores(este.cor[este.posicao[i][j]], este.cor[4]);
+					Tela.escrever(" " << este.jogador[este.posicao[i][j]] << " ");
+					Cores(este.cor[3], este.cor[4]);
+					
+					se(j != este.posicao[i].tamanho - 1)
+						Tela.escrever("|");
+				}
+				
+				se(i != este.posicao.tamanho - 1)
+				{
+					Posicionar(este.x, este.y + 2 * i + 1);
+					Tela.escrever("---|---|---");
+				}
+			}
+		}
+		
+		vencedor()
+		{
+			para(Inteiro: i; i < 3; i++)
+			{
+				se(
+					este.posicao[i][0] == este.posicao[i][1] &&
+					este.posicao[i][0] == este.posicao[i][2] &&
+					este.posicao[i][0] != 0
+				)
+					retornar: este.posicao[i][0];
+				
+				se(
+					este.posicao[0][i] == este.posicao[1][i] &&
+					este.posicao[0][i] == este.posicao[2][i] &&
+					este.posicao[0][i] != 0
+				)
+					retornar: este.posicao[0][i];
+			}
+			
+			se(
+				este.posicao[1][1] == este.posicao[0][0] &&
+				este.posicao[1][1] == este.posicao[2][2] &&
+				este.posicao[1][1] != 0
+			)
+				retornar: este.posicao[1][1];
+			se(
+				este.posicao[1][1] == este.posicao[0][2] &&
+				este.posicao[1][1] == este.posicao[2][0] &&
+				este.posicao[1][1] != 0
+			)
+				retornar: este.posicao[1][1];
+			
+			retornar: 0;
+		}
+}

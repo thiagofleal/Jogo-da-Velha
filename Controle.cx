@@ -1,0 +1,103 @@
+Classe: Controle
+{
+	Privado:
+		
+		Caractere: img = '#';
+		Inteiro: linha, coluna;
+		Inteiro: []cor;
+		Objeto: tabuleiro;
+	
+	Publico:
+		
+		construtor(Objeto: tabuleiro)
+		{
+			este.tabuleiro = tabuleiro;
+			este.cor = Vetor.inteiro(4, tabuleiro.cor(4));
+		}
+		
+		destrutor()
+		{
+			este.cor.liberar();
+		}
+		
+		alteraCaractere(Caractere: img)
+		{
+			este.img = img;
+		}
+		
+		alteraCor(Inteiro: cor)
+		{
+			este.cor[0] = cor;
+		}
+		
+		jogar(Inteiro: jogador)
+		{
+			Inteiro: x = este.tabuleiro.x();
+			Inteiro: y = este.tabuleiro.y();
+			Inteiro: tecla;
+			
+			fazer
+			{
+				este.cor[1] = este.tabuleiro.cor[4];
+				este.tabuleiro.desenhar();
+				
+				Cores(este.cor[0], este.cor[1]);
+				Posicionar(x + este.coluna * 4 + 1, y + este.linha * 2);
+				Tela.escrever(este.img);
+				
+				tecla = Tecla.ler();
+				
+				se(tecla == Tecla.SETA_DIREITA())
+				{
+					se(este.coluna < 2)
+					{
+						este.coluna++;
+					}
+					senao
+					{
+						este.coluna = 0;
+					}
+				}
+				
+				se(tecla == Tecla.SETA_ESQUERDA())
+				{
+					se(este.coluna > 0)
+					{
+						este.coluna--;
+					}
+					senao
+					{
+						este.coluna = 2;
+					}
+				}
+				
+				se(tecla == Tecla.SETA_ABAIXO())
+				{
+					se(este.linha < 2)
+					{
+						este.linha++;
+					}
+					senao
+					{
+						este.linha = 0;
+					}
+				}
+				
+				se(tecla == Tecla.SETA_ACIMA())
+				{
+					se(este.linha > 0)
+					{
+						este.linha--;
+					}
+					senao
+					{
+						este.linha = 2;
+					}
+				}
+			}
+			enquanto(tecla != Tecla.ENTER());
+			
+			se(!este.tabuleiro.marcar(este.linha, este.coluna, jogador))
+				este.jogar(jogador);
+		}
+}
